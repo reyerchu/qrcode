@@ -31,10 +31,15 @@ export default function MixpanelAnalytics() {
 
   useEffect(() => {
     mixpanel.track_pageview();
-    http(`${NEXT_PUBLIC_QRBTF_API_ENDPOINT}/count/update_count`, {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
+    // Only track if API endpoint is configured
+    if (NEXT_PUBLIC_QRBTF_API_ENDPOINT) {
+      http(`${NEXT_PUBLIC_QRBTF_API_ENDPOINT}/count/update_count`, {
+        method: "POST",
+        body: JSON.stringify(body),
+      }).catch(() => {
+        // Silently fail if analytics endpoint is not available
+      });
+    }
   }, [pathname]);
 
   const { data: session } = useSession();

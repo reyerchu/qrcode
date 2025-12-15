@@ -1,0 +1,20 @@
+[Unit]
+Description=QRBTF QR Code Generator Service
+After=network.target
+
+[Service]
+Type=simple
+User=reyerchu
+WorkingDirectory=/home/reyerchu/qrbtf
+Environment=NODE_ENV=production
+Environment=PORT=3044
+Environment=NVM_DIR=/home/reyerchu/.nvm
+# Load nvm and use node to run Next.js in production mode
+# Use npx to run next start since yarn might not be in PATH
+ExecStart=/bin/bash -c 'source /home/reyerchu/.nvm/nvm.sh && nvm use 20 && npx next start -p 3044'
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+
